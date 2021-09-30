@@ -12,16 +12,24 @@ const StyledBody = styled.div`
 class App extends React.Component{
     state={
         list: [],
-        completed: false
+        completed: false,
+        sorted: false,
+        updatedValue: ''
     }
     handleSubmit = (value) => {
-       const item = {
+       try{
+        const item = {
          id: `${Math.random() * 20}`,
          value,
-         
+        }
+        const newList = [...this.state.list, item];
+        if(this.state.list.find(el => el.value.includes(value))) {
+           return;
+        }
+        this.setState({list: newList});
+       }catch(err){
+         console.log('Please try again... something went wrong')
        }
-       const newList = [...this.state.list, item];
-       this.setState({list: newList});
     }
     handleRemove = (item) => {
       const newList = this.state.list.filter(el => el.id !== item.id);
@@ -36,13 +44,23 @@ class App extends React.Component{
       })
       this.setState({list: newList});
     }
+    handleEdit = (item, value) => {
+        console.log('item', item);
+        console.log('value', value)
+    }
+    
     render(){
-        console.log(this.state.list)
         return(
             <StyledBody>
               <h4>Rick and Morty</h4>
               <Form handleSubmit={this.handleSubmit}/>
-              <List list={this.state.list} handleRemove={this.handleRemove} handleToggle={this.handleToggle}/>  
+              <List 
+                list={this.state.list} 
+                handleRemove={this.handleRemove} 
+                handleToggle={this.handleToggle}
+                handleEdit={this.handleEdit}
+              />  
+              
             </StyledBody>
         )
     }

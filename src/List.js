@@ -11,7 +11,14 @@ const StyledUl = styled.ul`
 const List = (props) => {
     return(
         <StyledUl>
-          {props.list.map(item => <Item key={item.id} item={item} handleRemove={props.handleRemove} handleToggle={props.handleToggle}/>)}
+          {props.list.map(item => (
+            <Item 
+              key={item.id} 
+              item={item} 
+              handleRemove={props.handleRemove} 
+              handleToggle={props.handleToggle}
+              handleEdit={props.handleEdit}
+            />))}
         </StyledUl>
     )
 }

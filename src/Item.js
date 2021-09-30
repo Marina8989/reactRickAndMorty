@@ -7,17 +7,28 @@ const RemoveButton = styled.button`
 `
 const ToggleButton = styled.button`
     color: green;
+    margin: .5rem;
+`
+const EditButton = styled.button`
+    color: blue;
+    margin: .5rem;
 `
 
-const Item = (props) => {
-    console.log(props)
-    return(
-        <li className={props.item.completed ? 'toggle' : ''}>
-          {props.item.value}
-          <RemoveButton onClick={() => props.handleRemove(props.item)}>x</RemoveButton>
-          <ToggleButton onClick={() => props.handleToggle(props.item)}>toggle</ToggleButton>
-        </li>
+class Item extends React.Component{
+    state={
+        updatedValue: this.props.item.value
+    }
+    render(){
+        console.log(this.state.inputValue)
+       return(
+         <li className={this.props.item.completed ? 'toggle' : ''}>
+           {this.props.item.value}
+           <RemoveButton onClick={() => this.handleRemove(this.props.item)}>x</RemoveButton>
+           <ToggleButton onClick={() => this.handleToggle(this.props.item)}>toggle</ToggleButton>
+           <EditButton onClick={() => this.handleEdit(this.props.item, this.props.item.value)}>edit</EditButton>
+         </li>
     )
+    }
 }
 
 export default Item
