@@ -1,68 +1,43 @@
 import React from 'react';
-import Form from './Form';
-import List from './List';
+//import Form from './Form';
+//import List from './List';
 import './index.css';
-import styled from 'styled-components';
+import Morty from './Morty';
+import axios from 'axios';
+//import styled from 'styled-components';
 
-const StyledBody = styled.div`
-   text-align: center;
-   margin: 0 auto;
-`
+
+const API_BASE = 'https://rickandmortyapi.com/api/character';
 
 class App extends React.Component{
     state={
-        list: [],
-        completed: false,
-        sorted: false,
-        updatedValue: ''
+        cartoonData: null
+    } 
+    getInfo = async() => {
+      try{
+          const {data} = await axios(API_BASE);
+          console.log(data)
+          this.setState({cartoonData: data});
+          console.log(this.state.list)
+      }catch(err){
+        console.log(err)
+      }
     }
-    handleSubmit = (value) => {
-       try{
-        const item = {
-         id: `${Math.random() * 20}`,
-         value,
-        }
-        const newList = [...this.state.list, item];
-        if(this.state.list.find(el => el.value.includes(value))) {
-           return;
-        }
-        this.setState({list: newList});
-       }catch(err){
-         console.log('Please try again... something went wrong')
-       }
+    componentDidMount() {
+      this.getInfo(this.props.match.params.id);
     }
-    handleRemove = (item) => {
-      const newList = this.state.list.filter(el => el.id !== item.id);
-      this.setState({list: newList});
+    componentDidUpdate(prevProps) {
+      if(this.props.match.params.cityId !== prevProps.match.params.id) {
+        this.getInfo(this.props.match.params.cityId);
+      }
     }
-    handleToggle = (item) => {
-      const newList = this.state.list.map(el => {
-        if(el.id === item.id){
-           el.completed = !el.completed;
-        }
-        return el;
-      })
-      this.setState({list: newList});
-    }
-    handleEdit = (item, value) => {
-        console.log('item', item);
-        console.log('value', value)
-    }
-    
     render(){
-        return(
-            <StyledBody>
-              <h4>Rick and Morty</h4>
-              <Form handleSubmit={this.handleSubmit}/>
-              <List 
-                list={this.state.list} 
-                handleRemove={this.handleRemove} 
-                handleToggle={this.handleToggle}
-                handleEdit={this.handleEdit}
-              />  
-              
-            </StyledBody>
-        )
+      console.log(this.state.cartoonData)
+       return(
+         <div>
+           <Morty cartoonData={this.state.cartoonData}/>
+         </div>
+       )
     }
 }
 

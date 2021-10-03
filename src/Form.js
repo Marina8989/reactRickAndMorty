@@ -15,13 +15,12 @@ class Form extends React.Component{
     handleSubmit = (e) => {
       e.preventDefault();
       this.setState({inputValue: ''});
-      this.props.handleSubmit(this.state.inputValue)
-      console.log(this.state.inputValue);
+      this.props.handleSubmit(this.state.inputValue);
     }
     render() {
         return(
             <form onSubmit={this.handleSubmit}>
-                <StyledInput value={this.state.inputValue} onChange={this.handleChange}/>
+              <input value={this.state.inputValue} onChange={this.handleChange} style={{background: '1px solid grey'}}/>
             </form>
         )
     }
